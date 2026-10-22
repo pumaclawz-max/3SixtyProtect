@@ -33,7 +33,7 @@ const NAV: { label: string; href: string; icon: typeof LayoutDashboard; sub?: st
 ];
 
 const sectionLabel =
-  'mb-2 px-3 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-500';
+  'mb-2 px-3 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-300';
 
 export function AdminShell({
   email,
@@ -93,13 +93,13 @@ export function AdminShell({
                     'group flex items-center gap-3 border-l-2 px-3 py-2.5 font-mono text-[11px] uppercase tracking-[0.05em] transition-colors',
                     active
                       ? 'border-white bg-white/10 text-white'
-                      : 'border-transparent text-ink-300 hover:bg-white/5 hover:text-white',
+                      : 'border-transparent text-ink-100 hover:bg-white/5 hover:text-white',
                   )}
                 >
                   <item.icon
                     className={cn(
                       'h-[18px] w-[18px] shrink-0 transition-colors',
-                      active ? 'text-white' : 'text-ink-500 group-hover:text-white',
+                      active ? 'text-white' : 'text-ink-200 group-hover:text-white',
                     )}
                   />
                   <span className="flex flex-col leading-tight">
@@ -108,7 +108,7 @@ export function AdminShell({
                       <span
                         className={cn(
                           'mt-0.5 text-[9px] tracking-[0.15em] transition-colors',
-                          active ? 'text-ink-300' : 'text-ink-500 group-hover:text-ink-300',
+                          active ? 'text-ink-200' : 'text-ink-300 group-hover:text-ink-200',
                         )}
                       >
                         {item.sub}
@@ -145,9 +145,9 @@ export function AdminShell({
         <Link
           href="/"
           target="_blank"
-          className="group flex items-center gap-3 px-3 py-2.5 font-mono text-[11px] uppercase tracking-[0.05em] text-ink-300 transition-colors hover:bg-white/5 hover:text-white"
+          className="group flex items-center gap-3 px-3 py-2.5 font-mono text-[11px] uppercase tracking-[0.05em] text-ink-100 transition-colors hover:bg-white/5 hover:text-white"
         >
-          <ExternalLink className="h-[18px] w-[18px] shrink-0 text-ink-500 transition-colors group-hover:text-white" />
+          <ExternalLink className="h-[18px] w-[18px] shrink-0 text-ink-200 transition-colors group-hover:text-white" />
           View website
         </Link>
 
@@ -162,7 +162,7 @@ export function AdminShell({
             <p className="truncate text-sm font-medium text-white">
               {email ?? 'Demo admin'}
             </p>
-            <p className="truncate font-mono text-[10px] uppercase tracking-[0.1em] text-ink-500">
+            <p className="truncate font-mono text-[10px] uppercase tracking-[0.1em] text-ink-300">
               Signed in
             </p>
           </div>
