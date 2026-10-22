@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
+  Activity,
   LayoutDashboard,
   GraduationCap,
   ClipboardList,
@@ -26,6 +27,7 @@ const NAV: { label: string; href: string; icon: typeof LayoutDashboard; sub?: st
   { label: 'Courses', href: '/admin/courses', icon: GraduationCap },
   { label: 'Bookings', href: '/admin/bookings', icon: ClipboardList },
   { label: 'Enquiries', href: '/admin/enquiries', icon: Inbox },
+  { label: 'Site activity', href: '/admin/activity', icon: Activity },
   { label: 'Vetting & Screening', href: '/admin/vetting', icon: ShieldCheck, sub: 'BS 7858 Screening' },
   { label: 'Users', href: '/admin/users', icon: Users },
 ];

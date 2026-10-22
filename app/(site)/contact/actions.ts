@@ -9,6 +9,7 @@ import {
 import { enquirySchema, fieldErrors } from '@/lib/validation';
 import { ENQUIRY_TYPES } from '@/lib/constants';
 import { notifyNewEnquiry } from '@/lib/email';
+import { logActivity } from '@/lib/activity';
 
 export interface EnquiryFormState {
   status: 'idle' | 'success' | 'error';
@@ -59,6 +60,7 @@ export async function createEnquiryAction(
     });
 
     if (error) throw error;
+    await logActivity({ event_type: 'enquiry', path: '/contact', metadata: { enquiry_type: values.enquiry_type } });
 
     await notifyNewEnquiry({
       name: values.name,

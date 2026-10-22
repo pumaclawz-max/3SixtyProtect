@@ -1,5 +1,6 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { ActivityTracker } from '@/components/layout/ActivityTracker';
 import { getCourseTypes } from '@/lib/course-types';
 import { SITE } from '@/lib/constants';
 import { SERVICES } from '@/lib/services';
@@ -79,6 +80,7 @@ export default async function SiteLayout({
       <Header courseTypes={courseTypes} />
       <main className="flex-1">{children}</main>
       <Footer />
+      <ActivityTracker />
     </div>
   );
 }

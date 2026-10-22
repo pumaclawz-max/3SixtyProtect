@@ -306,6 +306,7 @@ export default function PrivacyPolicyPage() {
                     ['Staff records', '6 years after employment ends'],
                     ['Financial records', '6 years for tax and accounting'],
                     ['CCTV footage (if applicable)', '30 days (unless required for an incident)'],
+                    ['Website activity logs (IP address, pages visited, device and browser)', '90 days'],
                   ]}
                 />
               </Section>

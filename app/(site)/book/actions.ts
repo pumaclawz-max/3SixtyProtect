@@ -11,6 +11,7 @@ import { bookingSchema, fieldErrors } from '@/lib/validation';
 import { isStripeEnabled, createCheckoutSession } from '@/lib/stripe';
 import { notifyNewBooking } from '@/lib/email';
 import { formatDateRange } from '@/lib/utils';
+import { logActivity, type BookingOutcome } from '@/lib/activity';
 
 export interface BookingFormState {
   status: 'idle' | 'success' | 'error' | 'redirect';
@@ -59,8 +60,17 @@ export async function createBookingAction(
     message: formData.get('message') ?? '',
   };
 
+  const attempt = (outcome: BookingOutcome, extra: Record<string, unknown> = {}) =>
+    logActivity({
+      event_type: 'booking_attempt',
+      path: '/book',
+      metadata: { outcome, course_id: typeof raw.course_id === 'string' ? raw.course_id : null, ...extra },
+    });
+
   const parsed = bookingSchema.safeParse(raw);
   if (!parsed.success) {
+    // Field names only: never log what the visitor typed.
+    await attempt('invalid', { fields: Object.keys(fieldErrors(parsed.error)) });
     return {
       status: 'error',
       message: 'Please check the highlighted fields and try again.',
@@ -71,6 +81,7 @@ export async function createBookingAction(
   const values = parsed.data;
   const course = await getCourseById(values.course_id);
   if (!course) {
+    await attempt('unavailable');
     return {
       status: 'error',
       message: 'That course could not be found. Please choose another date.',
@@ -78,7 +89,10 @@ export async function createBookingAction(
     };
   }
 
+  const courseMeta = { course_title: course.title, course_date: course.start_date };
+
   if (course.status === 'fully_booked' || course.available_spaces <= 0) {
+    await attempt('fully_booked', courseMeta);
     return {
       status: 'error',
       message: 'Sorry, this course is now fully booked. Please choose another date.',
@@ -91,9 +105,11 @@ export async function createBookingAction(
   const start = new Date(`${course.start_date}T00:00:00Z`);
   const eighteenth = new Date(Date.UTC(dob.getUTCFullYear() + 18, dob.getUTCMonth(), dob.getUTCDate()));
   if (Number.isNaN(dob.getTime()) || dob > new Date() || dob.getUTCFullYear() < 1900) {
+    await attempt('invalid', { ...courseMeta, fields: ['date_of_birth'] });
     return { status: 'error', message: 'Please check the highlighted fields and try again.', errors: { date_of_birth: 'Please enter a valid date of birth' } };
   }
   if (eighteenth > start) {
+    await attempt('underage', courseMeta);
     return {
       status: 'error',
       message: 'Please check the highlighted fields and try again.',
@@ -196,6 +212,7 @@ export async function createBookingAction(
       });
 
       if (!session) {
+        await attempt('error', { ...courseMeta, reference: ref, stage: 'stripe' });
         return {
           status: 'error',
           message: 'We couldn’t start the secure payment. Please try again, or call us to book.',
@@ -204,6 +221,7 @@ export async function createBookingAction(
 
       // Record the session id for reconciliation.
       await supabase.from('bookings').update({ stripe_session_id: session.id }).eq('id', inserted.id);
+      await attempt('checkout', { ...courseMeta, reference: ref, amount: course.price });
 
       return { status: 'redirect', url: session.url, reference: ref };
     }
@@ -212,10 +230,12 @@ export async function createBookingAction(
     const { error } = await insertBooking();
     if (error) throw error;
     await notify();
+    await attempt('requested', { ...courseMeta, reference: ref });
 
     return { status: 'success', reference: ref, summary };
   } catch (err) {
     console.error('[book] createBookingAction failed:', err);
+    await attempt('error', { ...courseMeta, reference: ref });
     return {
       status: 'error',
       message:
