@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 import { Field, Input, Select } from '@/components/ui/Field';
 import { createScreeningAction } from '@/app/admin/_actions/screening';
 import { SIA_LICENCE_TYPES, type AdminUserLite } from '@/lib/screening/types';
@@ -25,7 +25,7 @@ export function NewScreeningForm({
   defaultAssignee?: string | null;
   today: string;
 }) {
-  const [state, formAction] = useFormState(createScreeningAction, INITIAL);
+  const [state, formAction] = useActionState(createScreeningAction, INITIAL);
 
   return (
     <form action={formAction} className="space-y-6">

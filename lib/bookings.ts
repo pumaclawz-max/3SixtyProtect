@@ -13,7 +13,7 @@ export async function getAllBookingsAdmin(): Promise<Booking[]> {
     );
   }
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data, error } = await supabase
       .from('bookings')
       .select(
@@ -49,7 +49,7 @@ export async function getBookingByIdAdmin(id: string): Promise<BookingDetail | n
     return b ? ({ ...b, course: (b.course as Course | null) ?? null } as BookingDetail) : null;
   }
   if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from('bookings')
     .select('*, course:courses ( * )')

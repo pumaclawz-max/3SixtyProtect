@@ -6,7 +6,8 @@ import { loadCasePage } from '@/lib/screening/page';
 export const metadata = { title: 'Audit trail' };
 export const dynamic = 'force-dynamic';
 
-export default async function AuditPage({ params }: { params: { id: string } }) {
+export default async function AuditPage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const ctx = await loadCasePage(params.id);
   if (ctx.kind !== 'ok') return null;
   const events = await loadAuditEvents(ctx.file.case.id);

@@ -12,13 +12,14 @@ import { SOURCE_LABELS, STAGES } from '@/lib/screening/types';
 export const metadata = { title: 'Screening overview' };
 export const dynamic = 'force-dynamic';
 
-export default async function CaseOverviewPage({
-  params,
-  searchParams,
-}: {
-  params: { id: string };
-  searchParams: SearchParams;
-}) {
+export default async function CaseOverviewPage(
+  props: {
+    params: Promise<{ id: string }>;
+    searchParams: Promise<SearchParams>;
+  }
+) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const ctx = await loadCasePage(params.id);
   if (ctx.kind !== 'ok') return null;
   const { file, evaluation } = ctx;

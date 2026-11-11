@@ -148,7 +148,7 @@ export async function createBookingAction(
     // Trusted (service-role) client can read back the inserted id (needed to
     // link the Stripe session) and bypass RLS for the write.
     const trusted = isServiceRoleConfigured();
-    const supabase = trusted ? createAdminClient() : createClient();
+    const supabase = trusted ? createAdminClient() : await createClient();
 
     const insertPayload = {
       course_id: course.id,

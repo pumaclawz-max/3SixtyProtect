@@ -9,8 +9,8 @@ import {
 import { createClient } from '@/lib/supabase/server';
 import { canManage } from '@/lib/auth';
 
-function db() {
-  return isServiceRoleConfigured() ? createAdminClient() : createClient();
+async function db() {
+  return isServiceRoleConfigured() ? createAdminClient() : await createClient();
 }
 
 /** Update a booking's status (used by a form select + submit). */
@@ -21,7 +21,7 @@ export async function setBookingStatusAction(formData: FormData) {
   const allowed = ['new', 'confirmed', 'cancelled', 'completed'];
   if (!id || !allowed.includes(status)) return;
 
-  const { error } = await db()
+  const { error } = await (await db())
     .from('bookings')
     .update({ booking_status: status })
     .eq('id', id);

@@ -12,7 +12,8 @@ import { getBooking, searchBookings, type BookingMatch } from '@/lib/screening/q
 export const metadata = { title: 'Start new screening' };
 export const dynamic = 'force-dynamic';
 
-export default async function NewScreeningPage({ searchParams }: { searchParams: SearchParams }) {
+export default async function NewScreeningPage(props: { searchParams: Promise<SearchParams> }) {
+  const searchParams = await props.searchParams;
   const access = await screeningAccess('screening.manage');
   if (access.kind === 'unauthenticated') redirect('/admin/login');
 

@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useActionState, useState } from 'react';
 import Link from 'next/link';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useFormStatus } from 'react-dom';
 import { LogIn, AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { Field, Input } from '@/components/ui/Field';
 import { Button } from '@/components/ui/Button';
@@ -21,7 +21,7 @@ function SubmitButton() {
 }
 
 export function LoginForm() {
-  const [state, formAction] = useFormState(signInAction, initialState);
+  const [state, formAction] = useActionState(signInAction, initialState);
   const [showPassword, setShowPassword] = useState(false);
 
   return (

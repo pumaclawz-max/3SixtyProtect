@@ -60,11 +60,12 @@ const contactCards = [
   },
 ];
 
-export default async function ContactPage({
-  searchParams,
-}: {
-  searchParams: { course?: string };
-}) {
+export default async function ContactPage(
+  props: {
+    searchParams: Promise<{ course?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   // Arriving from a course page (/contact?course=…) opens the form already
   // naming that course, so the enquiry lands with the context attached.
   const courseKey = courseKeyFromSlug(searchParams.course ?? '');

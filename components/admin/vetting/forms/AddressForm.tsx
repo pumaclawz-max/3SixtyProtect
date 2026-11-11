@@ -1,13 +1,13 @@
 'use client';
 
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 import { Field, Input, Select, Textarea } from '@/components/ui/Field';
 import { saveAddressAction } from '@/app/admin/_actions/screening';
 import { VERIFICATION_STATUS_META, type ScreeningAddress } from '@/lib/screening/types';
 import { Checkbox, FormError, FormFooter, FormGrid, INITIAL, MetaOptions, SubmitButton, d } from './bits';
 
 export function AddressForm({ caseId, address }: { caseId: string; address?: ScreeningAddress }) {
-  const [state, formAction] = useFormState(saveAddressAction, INITIAL);
+  const [state, formAction] = useActionState(saveAddressAction, INITIAL);
   const p = (k: string) => `addr-${address?.id ?? 'new'}-${k}`;
 
   return (

@@ -28,7 +28,8 @@ function received(iso: string): string {
   });
 }
 
-export default async function AdminEnquiriesPage({ searchParams }: { searchParams: { show?: string } }) {
+export default async function AdminEnquiriesPage(props: { searchParams: Promise<{ show?: string }> }) {
+  const searchParams = await props.searchParams;
   const enquiries = await getAllEnquiriesAdmin();
   const filter: Filter = FILTERS.some((f) => f.value === searchParams.show) ? (searchParams.show as Filter) : 'open';
   const counts: Record<Filter, number> = {

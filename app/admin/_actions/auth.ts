@@ -34,7 +34,7 @@ export async function signInAction(
     return { error: parsed.error.issues[0]?.message ?? 'Invalid details' };
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase.auth.signInWithPassword({
     email: parsed.data.email,
     password: parsed.data.password,
@@ -61,7 +61,7 @@ export async function signInAction(
 
 export async function signOutAction() {
   if (isSupabaseConfigured()) {
-    const supabase = createClient();
+    const supabase = await createClient();
     await supabase.auth.signOut();
   }
   redirect('/admin/login');
@@ -90,9 +90,9 @@ export async function requestPasswordResetAction(
     return { error: parsed.error.issues[0]?.message ?? 'Enter a valid email address' };
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {
-    redirectTo: authCallbackUrl('/admin/reset-password'),
+    redirectTo: await authCallbackUrl('/admin/reset-password'),
   });
   if (error) {
     console.error('[auth] resetPasswordForEmail failed:', error.message);
@@ -130,7 +130,7 @@ export async function updatePasswordAction(
     return { error: parsed.error.issues[0]?.message ?? 'Check the password' };
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();

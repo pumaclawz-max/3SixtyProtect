@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState, useEffect, useState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { Check, Send } from 'lucide-react';
 import { Field, Input, Textarea, Select } from '@/components/ui/Field';
 import { Button } from '@/components/ui/Button';
@@ -38,7 +38,7 @@ export function ContactForm({
   /** Message the form opens with, naming the course they came from. */
   defaultMessage?: string;
 } = {}) {
-  const [state, formAction] = useFormState(createEnquiryAction, initialState);
+  const [state, formAction] = useActionState(createEnquiryAction, initialState);
 
   // Spam check: only a real browser that has had the form open for a few
   // seconds sends the ready marker. Scripts that post the raw HTML never do.

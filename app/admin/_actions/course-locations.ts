@@ -12,8 +12,8 @@ export interface CourseLocationFormState {
   error?: string;
 }
 
-function db() {
-  return isServiceRoleConfigured() ? createAdminClient() : createClient();
+async function db() {
+  return isServiceRoleConfigured() ? createAdminClient() : await createClient();
 }
 
 function revalidateEverywhere() {
@@ -38,10 +38,10 @@ export async function addCourseLocationAction(
   const parsed = nameSchema.safeParse(formData.get('name'));
   if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? 'Check the location' };
 
-  const { data: last } = await db().from('course_locations').select('sort_order').order('sort_order', { ascending: false }).limit(1);
+  const { data: last } = await (await db()).from('course_locations').select('sort_order').order('sort_order', { ascending: false }).limit(1);
   const sort_order = ((last?.[0]?.sort_order as number | undefined) ?? 0) + 10;
 
-  const { error } = await db().from('course_locations').insert({ name: parsed.data, sort_order });
+  const { error } = await (await db()).from('course_locations').insert({ name: parsed.data, sort_order });
   if (error) {
     if (error.code === '23505') return { error: 'That location already exists.' };
     console.error('[course-locations] add failed:', error.message);
@@ -64,10 +64,10 @@ export async function updateCourseLocationAction(
     .safeParse({ name: formData.get('name'), sort_order: formData.get('sort_order') });
   if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? 'Check the details' };
 
-  const { data: current } = await db().from('course_locations').select('name').eq('id', id).maybeSingle();
+  const { data: current } = await (await db()).from('course_locations').select('name').eq('id', id).maybeSingle();
   if (!current) return { error: 'That location no longer exists.' };
 
-  const { error } = await db().from('course_locations').update(parsed.data).eq('id', id);
+  const { error } = await (await db()).from('course_locations').update(parsed.data).eq('id', id);
   if (error) {
     if (error.code === '23505') return { error: 'That location already exists.' };
     console.error('[course-locations] update failed:', error.message);
@@ -76,7 +76,7 @@ export async function updateCourseLocationAction(
 
   // Courses store the location name, so carry a rename through to them.
   if (current.name !== parsed.data.name) {
-    const { error: moveError } = await db()
+    const { error: moveError } = await (await db())
       .from('courses')
       .update({ location: parsed.data.name })
       .eq('location', current.name);
@@ -93,7 +93,7 @@ export async function deleteCourseLocationAction(formData: FormData): Promise<vo
   if (!id) return;
 
   // Existing courses keep their location text; it just leaves the menu.
-  const { error } = await db().from('course_locations').delete().eq('id', id);
+  const { error } = await (await db()).from('course_locations').delete().eq('id', id);
   if (error) console.error('[course-locations] delete failed:', error.message);
   revalidateEverywhere();
   redirect('/admin/courses/locations?deleted=1');

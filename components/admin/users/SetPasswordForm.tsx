@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState, useState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { AlertCircle, CheckCircle2, Eye, EyeOff, KeyRound } from 'lucide-react';
 import { setUserPasswordAction, type SetPasswordState } from '@/app/admin/_actions/users';
 
@@ -22,7 +22,7 @@ function SaveButton() {
 
 /** Collapsible "Set password" control for one portal user. */
 export function SetPasswordForm({ id, email }: { id: string; email: string }) {
-  const [state, formAction] = useFormState(setUserPasswordAction, initialState);
+  const [state, formAction] = useActionState(setUserPasswordAction, initialState);
   const [show, setShow] = useState(false);
 
   return (

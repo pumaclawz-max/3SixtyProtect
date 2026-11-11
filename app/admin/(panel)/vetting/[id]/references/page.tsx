@@ -23,7 +23,11 @@ import { firstParam, isUuid, loadCasePage, type SearchParams } from '@/lib/scree
 export const metadata = { title: 'References & verification' };
 export const dynamic = 'force-dynamic';
 
-export default async function ReferencesPage({ params, searchParams }: { params: { id: string }; searchParams: SearchParams }) {
+export default async function ReferencesPage(
+  props: { params: Promise<{ id: string }>; searchParams: Promise<SearchParams> }
+) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const ctx = await loadCasePage(params.id);
   if (ctx.kind !== 'ok') return null;
   const { file, evaluation, canManage } = ctx;

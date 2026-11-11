@@ -9,11 +9,12 @@ import { getCourseLocations } from '@/lib/course-locations';
 export const metadata = { title: 'Edit course' };
 export const dynamic = 'force-dynamic';
 
-export default async function EditCoursePage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function EditCoursePage(
+  props: {
+    params: Promise<{ id: string }>;
+  }
+) {
+  const params = await props.params;
   const [course, types, locations] = await Promise.all([
     getCourseById(params.id),
     getCourseTypes(),

@@ -7,11 +7,12 @@ export function generateStaticParams(): { slug: string }[] {
   return DETAIL_SERVICES.map((s) => ({ slug: s.slug }));
 }
 
-export function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}): Metadata {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ slug: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const s = getDetailService(params.slug);
   if (!s) return {};
   return {
@@ -21,7 +22,8 @@ export function generateMetadata({
   };
 }
 
-export default function Page({ params }: { params: { slug: string } }) {
+export default async function Page(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const s = getDetailService(params.slug);
   if (!s) notFound();
   return <ServicePageTemplate service={s} />;

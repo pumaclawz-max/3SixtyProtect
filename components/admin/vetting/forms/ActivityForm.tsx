@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 import { Field, Input, Select, Textarea } from '@/components/ui/Field';
 import { saveActivityAction } from '@/app/admin/_actions/screening';
 import {
@@ -11,7 +11,7 @@ import {
 import { Checkbox, FormError, FormFooter, FormGrid, INITIAL, MetaOptions, SubmitButton, d } from './bits';
 
 export function ActivityForm({ caseId, activity }: { caseId: string; activity?: ScreeningActivity }) {
-  const [state, formAction] = useFormState(saveActivityAction, INITIAL);
+  const [state, formAction] = useActionState(saveActivityAction, INITIAL);
   const p = (k: string) => `act-${activity?.id ?? 'new'}-${k}`;
 
   return (

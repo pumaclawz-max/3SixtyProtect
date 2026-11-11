@@ -28,7 +28,8 @@ const MESSAGES: Record<string, string> = {
   removed: 'User removed.',
 };
 
-export default async function UsersPage({ searchParams }: { searchParams: Record<string, string | undefined> }) {
+export default async function UsersPage(props: { searchParams: Promise<Record<string, string | undefined>> }) {
+  const searchParams = await props.searchParams;
   const session = await getAdminSession();
   const allowed = await canManageUsers();
   const flash = Object.keys(MESSAGES).find((k) => searchParams[k]);

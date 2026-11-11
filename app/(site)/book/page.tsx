@@ -14,11 +14,12 @@ export const metadata: Metadata = {
   alternates: { canonical: '/book' },
 };
 
-export default async function BookPage({
-  searchParams,
-}: {
-  searchParams: { course?: string; canceled?: string };
-}) {
+export default async function BookPage(
+  props: {
+    searchParams: Promise<{ course?: string; canceled?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const courses = await getPublicCourses();
   const paymentEnabled = isStripeEnabled();
   const assurances = [

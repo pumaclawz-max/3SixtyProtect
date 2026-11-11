@@ -77,7 +77,7 @@ export async function inviteUserAction(_prev: UserFormState, formData: FormData)
     else failure = created.error?.message ?? 'createUser failed';
   } else {
     const invite = await db.auth.admin.inviteUserByEmail(email, {
-      redirectTo: authCallbackUrl('/admin/reset-password'),
+      redirectTo: await authCallbackUrl('/admin/reset-password'),
     });
     if (invite.data.user) userId = invite.data.user.id;
     else failure = invite.error?.message ?? 'inviteUserByEmail failed';

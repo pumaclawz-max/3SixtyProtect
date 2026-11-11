@@ -1,6 +1,7 @@
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import Link from 'next/link';
 import { Save, AlertCircle } from 'lucide-react';
 import { Field, Input, Textarea, Select } from '@/components/ui/Field';
@@ -38,7 +39,7 @@ export function CourseForm({
 }) {
   const isEdit = Boolean(course);
   const action = isEdit ? updateCourseAction : createCourseAction;
-  const [state, formAction] = useFormState(action, initialState);
+  const [state, formAction] = useActionState(action, initialState);
 
   return (
     <form action={formAction} encType="multipart/form-data" className="space-y-8">

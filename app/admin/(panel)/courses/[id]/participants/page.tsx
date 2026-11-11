@@ -74,7 +74,8 @@ function ParticipantTable({ rows, muted = false }: { rows: Booking[]; muted?: bo
   );
 }
 
-export default async function CourseParticipantsPage({ params }: { params: { id: string } }) {
+export default async function CourseParticipantsPage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const course = await getCourseById(params.id);
   if (!course) notFound();
 

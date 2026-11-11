@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState, useState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { AlertCircle, Eye, EyeOff, KeyRound } from 'lucide-react';
 import { Field, Input } from '@/components/ui/Field';
 import { Button } from '@/components/ui/Button';
@@ -20,7 +20,7 @@ function SubmitButton() {
 }
 
 export function ResetPasswordForm() {
-  const [state, formAction] = useFormState(updatePasswordAction, initialState);
+  const [state, formAction] = useActionState(updatePasswordAction, initialState);
   const [show, setShow] = useState(false);
   const type = show ? 'text' : 'password';
 

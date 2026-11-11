@@ -38,7 +38,7 @@ async function getPublicCoursesRaw(type?: CourseType): Promise<Course[]> {
   }
 
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     let query = supabase
       .from('courses')
       .select('*')
@@ -74,7 +74,7 @@ async function getCourseByIdRaw(id: string): Promise<Course | null> {
     return MOCK_COURSES.find((c) => c.id === id) ?? null;
   }
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data, error } = await supabase
       .from('courses')
       .select('*')
@@ -94,7 +94,7 @@ async function getAllCoursesAdminRaw(): Promise<Course[]> {
     return [...MOCK_COURSES].sort((a, b) => b.start_date.localeCompare(a.start_date));
   }
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data, error } = await supabase
       .from('courses')
       .select('*')

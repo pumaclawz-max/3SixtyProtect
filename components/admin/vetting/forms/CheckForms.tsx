@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 import { Plus } from 'lucide-react';
 import { Field, Input, Select, Textarea } from '@/components/ui/Field';
 import { Button } from '@/components/ui/Button';
@@ -10,7 +10,7 @@ import { Checkbox, FormError, FormFooter, FormGrid, INITIAL, MetaOptions, Submit
 
 /** Inline editor for one configured check. */
 export function CheckForm({ caseId, check }: { caseId: string; check: ScreeningCheck }) {
-  const [state, formAction] = useFormState(saveCheckAction, INITIAL);
+  const [state, formAction] = useActionState(saveCheckAction, INITIAL);
   const p = (k: string) => `check-${check.id}-${k}`;
 
   return (
@@ -43,7 +43,7 @@ export function CheckForm({ caseId, check }: { caseId: string; check: ScreeningC
 
 /** Add a bespoke check to this case (the list is configurable, not fixed). */
 export function AddCheckForm({ caseId }: { caseId: string }) {
-  const [state, formAction] = useFormState(addCheckAction, INITIAL);
+  const [state, formAction] = useActionState(addCheckAction, INITIAL);
   return (
     <form action={formAction} className="space-y-4">
       <input type="hidden" name="case_id" value={caseId} />

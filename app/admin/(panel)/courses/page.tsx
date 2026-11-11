@@ -20,11 +20,12 @@ import { formatDateRange, formatPrice } from '@/lib/utils';
 export const metadata = { title: 'Courses' };
 export const dynamic = 'force-dynamic';
 
-export default async function AdminCoursesPage({
-  searchParams,
-}: {
-  searchParams: { created?: string; updated?: string };
-}) {
+export default async function AdminCoursesPage(
+  props: {
+    searchParams: Promise<{ created?: string; updated?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const [courses, bookedCounts] = await Promise.all([getAllCoursesAdmin(), getBookingCountsByCourse()]);
   const toast = searchParams.created
     ? 'Course created.'

@@ -17,11 +17,12 @@ const MESSAGES: Record<string, string> = {
   deleted: 'Location removed from the menu.',
 };
 
-export default async function CourseLocationsPage({ searchParams }: { searchParams: Record<string, string | undefined> }) {
+export default async function CourseLocationsPage(props: { searchParams: Promise<Record<string, string | undefined>> }) {
+  const searchParams = await props.searchParams;
   let locations: CourseLocation[] = [];
   let missing = !isSupabaseConfigured();
   if (!missing) {
-    const { data, error } = await createClient()
+    const { data, error } = await (await createClient())
       .from('course_locations')
       .select('id, name, sort_order')
       .order('sort_order', { ascending: true })

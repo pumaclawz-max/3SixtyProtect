@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState, useState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { AlertCircle, Eye, EyeOff, Send, UserPlus } from 'lucide-react';
 import { Field, Input, Select } from '@/components/ui/Field';
 import { Button } from '@/components/ui/Button';
@@ -41,7 +41,7 @@ function SubmitButton({ method }: { method: 'password' | 'invite' }) {
 }
 
 export function InviteUserForm() {
-  const [state, formAction] = useFormState(inviteUserAction, initialState);
+  const [state, formAction] = useActionState(inviteUserAction, initialState);
   const [method, setMethod] = useState<'password' | 'invite'>('password');
   const [showPassword, setShowPassword] = useState(false);
 

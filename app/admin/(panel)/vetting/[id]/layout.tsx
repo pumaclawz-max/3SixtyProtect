@@ -12,7 +12,13 @@ import type { Stage } from '@/lib/screening/types';
 export const dynamic = 'force-dynamic';
 
 /** Case shell: header, progress and section navigation shared by every case page. */
-export default async function CaseLayout({ params, children }: { params: { id: string }; children: ReactNode }) {
+export default async function CaseLayout(props: { params: Promise<{ id: string }>; children: ReactNode }) {
+  const params = await props.params;
+
+  const {
+    children
+  } = props;
+
   const ctx = await loadCasePage(params.id);
   if (ctx.kind === 'unauthenticated') redirect('/admin/login');
   if (ctx.kind === 'config') return <SetupNotice reason="config" />;

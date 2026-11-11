@@ -89,7 +89,8 @@ async function linkedScreenings(bookingId: string): Promise<LinkedScreening[]> {
   }
 }
 
-export default async function BookingDetailPage({ params }: { params: { id: string } }) {
+export default async function BookingDetailPage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const booking = await getBookingByIdAdmin(params.id);
   if (!booking) notFound();
 

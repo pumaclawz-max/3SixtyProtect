@@ -1,6 +1,7 @@
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { AlertCircle, CheckCircle2, Send } from 'lucide-react';
 import { Field, Input } from '@/components/ui/Field';
 import { Button } from '@/components/ui/Button';
@@ -19,7 +20,7 @@ function SubmitButton() {
 }
 
 export function ForgotPasswordForm() {
-  const [state, formAction] = useFormState(requestPasswordResetAction, initialState);
+  const [state, formAction] = useActionState(requestPasswordResetAction, initialState);
 
   if (state.success) {
     return (

@@ -10,7 +10,11 @@ import { STAGES, type Stage } from '@/lib/screening/types';
 export const metadata = { title: 'Evidence vault' };
 export const dynamic = 'force-dynamic';
 
-export default async function EvidencePage({ params, searchParams }: { params: { id: string }; searchParams: SearchParams }) {
+export default async function EvidencePage(
+  props: { params: Promise<{ id: string }>; searchParams: Promise<SearchParams> }
+) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const ctx = await loadCasePage(params.id);
   if (ctx.kind !== 'ok') return null;
   const { file, canEvidence, locked } = ctx;

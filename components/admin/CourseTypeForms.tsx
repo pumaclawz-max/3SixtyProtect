@@ -1,6 +1,7 @@
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { AlertCircle, Plus, Save, Trash2 } from 'lucide-react';
 import { Field, Input } from '@/components/ui/Field';
 import { Button } from '@/components/ui/Button';
@@ -35,7 +36,7 @@ function ErrorLine({ state }: { state: CourseTypeFormState }) {
 }
 
 export function AddCourseTypeForm() {
-  const [state, formAction] = useFormState(addCourseTypeAction, initialState);
+  const [state, formAction] = useActionState(addCourseTypeAction, initialState);
   return (
     <form action={formAction} className="space-y-4">
       <ErrorLine state={state} />
@@ -61,7 +62,7 @@ export function EditCourseTypeForm({
   courseCount: number;
   builtIn: boolean;
 }) {
-  const [state, formAction] = useFormState(updateCourseTypeAction, initialState);
+  const [state, formAction] = useActionState(updateCourseTypeAction, initialState);
   const canDelete = !builtIn && courseCount === 0;
   return (
     <div className="space-y-3">

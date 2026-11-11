@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { Field, Textarea } from '@/components/ui/Field';
 import { recordReviewAction, reopenCaseAction } from '@/app/admin/_actions/screening';
@@ -28,7 +28,7 @@ export function ReviewForm({
   unresolvedCount: number;
   reviewerEmail: string;
 }) {
-  const [state, formAction] = useFormState(recordReviewAction, INITIAL);
+  const [state, formAction] = useActionState(recordReviewAction, INITIAL);
   const decisions = Object.keys(REVIEW_DECISION_META) as ReviewDecision[];
 
   return (
@@ -86,7 +86,7 @@ export function ReviewForm({
 }
 
 export function ReopenForm({ caseId }: { caseId: string }) {
-  const [state, formAction] = useFormState(reopenCaseAction, INITIAL);
+  const [state, formAction] = useActionState(reopenCaseAction, INITIAL);
   return (
     <form action={formAction} className="space-y-4">
       <input type="hidden" name="case_id" value={caseId} />

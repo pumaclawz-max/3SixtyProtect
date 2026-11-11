@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 import { Field, Input, Select, Textarea } from '@/components/ui/Field';
 import { saveIdentityDocumentAction } from '@/app/admin/_actions/screening';
 import {
@@ -11,7 +11,7 @@ import {
 import { FormError, FormFooter, FormGrid, INITIAL, MetaOptions, SubmitButton, d } from './bits';
 
 export function IdentityDocumentForm({ caseId, document }: { caseId: string; document?: IdentityDocument }) {
-  const [state, formAction] = useFormState(saveIdentityDocumentAction, INITIAL);
+  const [state, formAction] = useActionState(saveIdentityDocumentAction, INITIAL);
   const p = (k: string) => `doc-${document?.id ?? 'new'}-${k}`;
 
   return (

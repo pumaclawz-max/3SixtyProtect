@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 import { Field, Input, Select } from '@/components/ui/Field';
 import { updateCandidateAction } from '@/app/admin/_actions/screening';
 import { SIA_LICENCE_TYPES, type ScreeningCandidate, type ScreeningCase } from '@/lib/screening/types';
@@ -8,7 +8,7 @@ import { FormError, FormFooter, FormGrid, INITIAL, SubmitButton, d } from './bit
 
 /** Personal details + the case's role fields. Full sensitive values are only shown here. */
 export function CandidateForm({ candidate, screening }: { candidate: ScreeningCandidate; screening: ScreeningCase }) {
-  const [state, formAction] = useFormState(updateCandidateAction, INITIAL);
+  const [state, formAction] = useActionState(updateCandidateAction, INITIAL);
 
   return (
     <form action={formAction} className="space-y-6">

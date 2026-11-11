@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState, useEffect, useMemo, useState } from 'react';
+import { useFormStatus } from 'react-dom';
 import Link from 'next/link';
 import {
   CalendarDays,
@@ -48,7 +48,7 @@ export function BookingForm({
   initialCourseId?: string;
   paymentEnabled?: boolean;
 }) {
-  const [state, formAction] = useFormState(createBookingAction, initialState);
+  const [state, formAction] = useActionState(createBookingAction, initialState);
   const today = new Date().toISOString().slice(0, 10);
 
   // When the action returns a Stripe Checkout URL, send the browser there.

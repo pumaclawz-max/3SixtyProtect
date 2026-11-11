@@ -12,7 +12,7 @@ export async function setEnquiryHandledAction(formData: FormData): Promise<void>
   if (!id) return;
   const handled = formData.get('handled') === 'true';
 
-  const db = isServiceRoleConfigured() ? createAdminClient() : createClient();
+  const db = isServiceRoleConfigured() ? createAdminClient() : await createClient();
   const { error } = await db.from('enquiries').update({ handled }).eq('id', id);
   if (error) console.error('[enquiries] update failed:', error.message);
   revalidatePath('/admin/enquiries');

@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 import { Upload } from 'lucide-react';
 import { Field, Input, Select, Textarea } from '@/components/ui/Field';
 import { uploadEvidenceAction } from '@/app/admin/_actions/screening';
@@ -23,7 +23,7 @@ export function EvidenceUploadForm({
   related: RelatedRecordOption[];
   defaultSection?: Stage | null;
 }) {
-  const [state, formAction] = useFormState(uploadEvidenceAction, INITIAL);
+  const [state, formAction] = useActionState(uploadEvidenceAction, INITIAL);
   const maxMb = Math.round(EVIDENCE_MAX_BYTES / 1024 / 1024);
 
   return (

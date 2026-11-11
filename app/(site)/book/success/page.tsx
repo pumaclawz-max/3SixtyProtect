@@ -14,11 +14,12 @@ export const metadata: Metadata = {
 
 export const dynamic = 'force-dynamic';
 
-export default async function BookingSuccessPage({
-  searchParams,
-}: {
-  searchParams: { session_id?: string };
-}) {
+export default async function BookingSuccessPage(
+  props: {
+    searchParams: Promise<{ session_id?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const sessionId = searchParams.session_id;
   const stripe = getStripe();
 

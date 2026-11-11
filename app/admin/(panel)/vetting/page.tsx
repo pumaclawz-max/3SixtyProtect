@@ -45,7 +45,8 @@ function Header({ canStart }: { canStart: boolean }) {
   );
 }
 
-export default async function VettingPage({ searchParams }: { searchParams: SearchParams }) {
+export default async function VettingPage(props: { searchParams: Promise<SearchParams> }) {
+  const searchParams = await props.searchParams;
   const access = await screeningAccess();
   if (access.kind === 'unauthenticated') redirect('/admin/login');
   if (access.kind === 'config') {

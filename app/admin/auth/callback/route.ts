@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
   const safeNext = next.startsWith('/admin/') ? next : '/admin/reset-password';
 
   if (code) {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) return NextResponse.redirect(new URL(safeNext, url.origin));
     console.error('[auth] exchangeCodeForSession failed:', error.message);

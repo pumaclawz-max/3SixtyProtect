@@ -1,13 +1,13 @@
 'use client';
 
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 import { Field, Input, Select, Textarea } from '@/components/ui/Field';
 import { saveRightToWorkAction } from '@/app/admin/_actions/screening';
 import { RTW_CHECK_TYPES, RTW_STATUS_META, type RightToWork } from '@/lib/screening/types';
 import { FormError, FormFooter, FormGrid, INITIAL, MetaOptions, SubmitButton, d } from './bits';
 
 export function RightToWorkForm({ caseId, rtw }: { caseId: string; rtw: RightToWork | null }) {
-  const [state, formAction] = useFormState(saveRightToWorkAction, INITIAL);
+  const [state, formAction] = useActionState(saveRightToWorkAction, INITIAL);
 
   return (
     <form action={formAction} className="space-y-5">

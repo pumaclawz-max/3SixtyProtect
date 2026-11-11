@@ -137,11 +137,12 @@ function tally<T>(items: T[], key: (item: T) => string | null): [string, number]
 
 // ── page ─────────────────────────────────────────────────────
 
-export default async function AdminActivityPage({
-  searchParams,
-}: {
-  searchParams: { range?: string; view?: string; bots?: string };
-}) {
+export default async function AdminActivityPage(
+  props: {
+    searchParams: Promise<{ range?: string; view?: string; bots?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const range = RANGES.find((r) => r.value === searchParams.range) ?? RANGES[1];
   const view: View = VIEWS.some((v) => v.value === searchParams.view) ? (searchParams.view as View) : 'visits';
   const showBots = searchParams.bots === '1';

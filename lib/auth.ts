@@ -21,7 +21,7 @@ export async function getAdminSession(): Promise<AdminSession> {
     return { mode: 'demo', id: null, email: null, role: null, permissions: [] };
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();

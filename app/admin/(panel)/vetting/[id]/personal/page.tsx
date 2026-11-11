@@ -11,7 +11,11 @@ import { loadCasePage, type SearchParams } from '@/lib/screening/page';
 export const metadata = { title: 'Personal details' };
 export const dynamic = 'force-dynamic';
 
-export default async function PersonalPage({ params, searchParams }: { params: { id: string }; searchParams: SearchParams }) {
+export default async function PersonalPage(
+  props: { params: Promise<{ id: string }>; searchParams: Promise<SearchParams> }
+) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const ctx = await loadCasePage(params.id);
   if (ctx.kind !== 'ok') return null;
   const { file, evaluation, canManage } = ctx;

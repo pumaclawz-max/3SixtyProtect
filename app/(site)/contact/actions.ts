@@ -67,7 +67,7 @@ export async function createEnquiryAction(
   try {
     const supabase = isServiceRoleConfigured()
       ? createAdminClient()
-      : createClient();
+      : await createClient();
 
     const { error } = await supabase.from('enquiries').insert({
       name: values.name,

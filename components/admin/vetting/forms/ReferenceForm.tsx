@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 import { Field, Input, Select, Textarea } from '@/components/ui/Field';
 import { saveReferenceAction } from '@/app/admin/_actions/screening';
 import {
@@ -26,7 +26,7 @@ export function ReferenceForm({
   activities: ScreeningActivity[];
   defaultActivityId?: string | null;
 }) {
-  const [state, formAction] = useFormState(saveReferenceAction, INITIAL);
+  const [state, formAction] = useActionState(saveReferenceAction, INITIAL);
   const p = (k: string) => `ref-${reference?.id ?? 'new'}-${k}`;
   const linked = activities.find((a) => a.id === (reference?.activity_id ?? defaultActivityId));
 

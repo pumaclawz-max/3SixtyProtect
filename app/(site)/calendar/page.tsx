@@ -12,11 +12,12 @@ export const metadata: Metadata = {
 };
 
 
-export default async function CalendarPage({
-  searchParams,
-}: {
-  searchParams: { type?: string };
-}) {
+export default async function CalendarPage(
+  props: {
+    searchParams: Promise<{ type?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const courses = await getPublicCourses();
   // ?type=door-supervision → door_supervision (works for added types too).
   const requested = (searchParams.type ?? '').toLowerCase().replace(/-/g, '_');

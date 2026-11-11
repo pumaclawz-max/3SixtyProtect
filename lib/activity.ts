@@ -100,8 +100,8 @@ function decode(value: string | null): string | null {
 }
 
 /** Who is making this request: IP, location (from Vercel's edge) and browser. */
-export function requestContext() {
-  const h = headers();
+export async function requestContext() {
+  const h = await headers();
   const ip =
     h.get('x-forwarded-for')?.split(',')[0]?.trim() ||
     h.get('x-real-ip') ||
@@ -143,7 +143,7 @@ export async function logActivity(input: LogActivityInput): Promise<void> {
   try {
     const supabase = createAdminClient();
     const { error } = await supabase.from('site_events').insert({
-      ...requestContext(),
+      ...(await requestContext()),
       ...input,
       metadata: input.metadata ?? {},
     });
@@ -181,7 +181,7 @@ const MAX_ROWS = 25_000;
 /** Every event since `since`, newest first (admin only, via RLS). */
 export async function getActivitySince(since: Date): Promise<{ events: SiteEvent[]; truncated: boolean }> {
   if (!isSupabaseConfigured()) return { events: [], truncated: false };
-  const supabase = createClient();
+  const supabase = await createClient();
   const events: SiteEvent[] = [];
   try {
     for (let from = 0; from < MAX_ROWS; from += PAGE_SIZE) {

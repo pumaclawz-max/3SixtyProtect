@@ -8,7 +8,7 @@ import type { Enquiry } from './types';
 export async function getAllEnquiriesAdmin(): Promise<Enquiry[]> {
   if (!isSupabaseConfigured()) return [];
   try {
-    const { data, error } = await createClient()
+    const { data, error } = await (await createClient())
       .from('enquiries')
       .select('id, name, email, phone, enquiry_type, message, handled, created_at')
       .order('created_at', { ascending: false });

@@ -13,7 +13,8 @@ export const dynamic = 'force-dynamic';
  * Note: middleware does not cover /api routes, so the checks below are the
  * only gate — keep them first.
  */
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   if (!isScreeningConfigured()) return new Response('Screening is not configured', { status: 503 });
 
   const actor = await getScreeningActor();

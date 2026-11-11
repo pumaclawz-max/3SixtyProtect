@@ -18,11 +18,12 @@ const MESSAGES: Record<string, string> = {
   deleted: 'Course type deleted.',
 };
 
-export default async function CourseTypesPage({ searchParams }: { searchParams: Record<string, string | undefined> }) {
+export default async function CourseTypesPage(props: { searchParams: Promise<Record<string, string | undefined>> }) {
+  const searchParams = await props.searchParams;
   let types: CourseTypeInfo[] = [];
   let missing = !isSupabaseConfigured();
   if (!missing) {
-    const { data, error } = await createClient()
+    const { data, error } = await (await createClient())
       .from('course_types')
       .select('key, label, short_label, sort_order')
       .order('sort_order', { ascending: true })

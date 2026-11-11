@@ -12,16 +12,17 @@ export const metadata: Metadata = {
 };
 export const dynamic = 'force-dynamic';
 
-export default async function ResetPasswordPage({
-  searchParams,
-}: {
-  searchParams: { error?: string };
-}) {
+export default async function ResetPasswordPage(
+  props: {
+    searchParams: Promise<{ error?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   let email: string | null = null;
   if (isSupabaseConfigured() && !searchParams.error) {
     const {
       data: { user },
-    } = await createClient().auth.getUser();
+    } = await (await createClient()).auth.getUser();
     email = user?.email ?? null;
   }
 

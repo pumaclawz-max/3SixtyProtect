@@ -134,7 +134,7 @@ async function resolveImage(formData: FormData): Promise<ImageResult> {
 
   const ext = (file.name.split('.').pop() ?? '').toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 8);
   const path = `${randomUUID()}${ext ? `.${ext}` : ''}`;
-  const client = db();
+  const client = await db();
   const { error } = await client.storage
     .from(IMAGE_BUCKET)
     .upload(path, await file.arrayBuffer(), { contentType: file.type, upsert: false });
@@ -147,8 +147,8 @@ async function resolveImage(formData: FormData): Promise<ImageResult> {
   return { ok: true, url: data.publicUrl };
 }
 
-function db() {
-  return isServiceRoleConfigured() ? createAdminClient() : createClient();
+async function db() {
+  return isServiceRoleConfigured() ? createAdminClient() : await createClient();
 }
 
 function revalidateAll() {
@@ -202,7 +202,7 @@ export async function createCourseAction(
     return { status: 'error', message: image.message, errors: { [image.field]: image.message } };
   }
 
-  const { error } = await db().from('courses').insert(toRow(parsed.data, image.url ?? null));
+  const { error } = await (await db()).from('courses').insert(toRow(parsed.data, image.url ?? null));
   if (error) {
     console.error('[admin] createCourse failed:', error);
     return { status: 'error', message: 'Could not save the course. Please try again.' };
@@ -246,7 +246,7 @@ export async function updateCourseAction(
     return { status: 'error', message: image.message, errors: { [image.field]: image.message } };
   }
 
-  const { error } = await db()
+  const { error } = await (await db())
     .from('courses')
     .update(toRow(parsed.data, image.url ?? null))
     .eq('id', id);
@@ -264,7 +264,7 @@ export async function deleteCourseAction(formData: FormData) {
   if (!isSupabaseConfigured() || !(await canManage())) return;
   const id = String(formData.get('id') ?? '');
   if (!id) return;
-  const { error } = await db().from('courses').delete().eq('id', id);
+  const { error } = await (await db()).from('courses').delete().eq('id', id);
   if (error) console.error('[admin] deleteCourse failed:', error);
   revalidateAll();
 }
@@ -276,7 +276,7 @@ export async function setCourseStatusAction(formData: FormData) {
   const status = String(formData.get('status') ?? '');
   const allowed = ['draft', 'published', 'fully_booked', 'cancelled'];
   if (!id || !allowed.includes(status)) return;
-  const { error } = await db().from('courses').update({ status }).eq('id', id);
+  const { error } = await (await db()).from('courses').update({ status }).eq('id', id);
   if (error) console.error('[admin] setCourseStatus failed:', error);
   revalidateAll();
 }

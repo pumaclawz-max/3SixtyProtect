@@ -16,7 +16,7 @@ export function isMissingLocationsTable(err: unknown): boolean {
 export const getCourseLocations = cache(async (): Promise<CourseLocation[]> => {
   if (!isSupabaseConfigured()) return DEFAULT_COURSE_LOCATIONS;
   try {
-    const { data, error } = await createClient()
+    const { data, error } = await (await createClient())
       .from('course_locations')
       .select('id, name, sort_order')
       .order('sort_order', { ascending: true })
