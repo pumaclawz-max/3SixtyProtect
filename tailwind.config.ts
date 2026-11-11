@@ -83,7 +83,8 @@ const config: Config = {
         // Monolith display/type scale (family + size applied together)
         'display-2xl': ['6rem', { lineHeight: '5.5rem', letterSpacing: '-0.04em', fontWeight: '800' }], // 96/88
         'display-lg': ['4.5rem', { lineHeight: '4.5rem', letterSpacing: '-0.03em', fontWeight: '700' }], // 72/72
-        'display-lg-mobile': ['3rem', { lineHeight: '3rem', letterSpacing: '-0.02em', fontWeight: '700' }], // 48/48
+        // Scales with screen width so the longest headline words fit whole on small phones; 48px max
+        'display-lg-mobile': ['clamp(2rem, 10.5vw, 3rem)', { lineHeight: '1.05', letterSpacing: '-0.02em', fontWeight: '700' }],
         'headline-md': ['2rem', { lineHeight: '2.5rem', letterSpacing: '-0.02em', fontWeight: '600' }], // 32/40
         'body-lg': ['1.125rem', { lineHeight: '1.8', letterSpacing: '0em', fontWeight: '400' }], // 18
         'body-md': ['1rem', { lineHeight: '1.6', letterSpacing: '0em', fontWeight: '400' }], // 16

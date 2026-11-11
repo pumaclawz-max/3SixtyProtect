@@ -29,7 +29,9 @@
     /* Large display type must never overflow narrow screens, e.g. when a
        mobile browser scales text up for accessibility */
     overflow-wrap: break-word;
-    hyphens: auto;
+    /* No automatic hyphenation: it split headline words mid-word on phones
+       ("PRO-TECTION"). Mobile display sizes scale with the screen instead. */
+    hyphens: manual;
   }
 
   /* Interaction = color inversion */
