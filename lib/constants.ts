@@ -44,7 +44,7 @@ export const NAV_LINKS: NavLink[] = [
   { label: 'Services', href: '/services' },
   { label: 'Training Courses', mega: true },
   { label: 'Training Calendar', href: '/calendar' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Contact Us', href: '/contact' },
 ];
 
 export const COURSE_TYPE_META: Record<
