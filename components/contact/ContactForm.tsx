@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import { Check, Send } from 'lucide-react';
 import { Field, Input, Textarea, Select } from '@/components/ui/Field';
@@ -9,6 +10,12 @@ import {
   createEnquiryAction,
   type EnquiryFormState,
 } from '@/app/(site)/contact/actions';
+import {
+  HONEYPOT_FIELD,
+  MIN_FILL_MS,
+  READY_FIELD,
+  READY_VALUE,
+} from '@/lib/spam';
 
 const initialState: EnquiryFormState = { status: 'idle' };
 
@@ -32,6 +39,14 @@ export function ContactForm({
   defaultMessage?: string;
 } = {}) {
   const [state, formAction] = useFormState(createEnquiryAction, initialState);
+
+  // Spam check: only a real browser that has had the form open for a few
+  // seconds sends the ready marker. Scripts that post the raw HTML never do.
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => setReady(true), MIN_FILL_MS);
+    return () => clearTimeout(timer);
+  }, []);
 
   if (state.status === 'success') {
     return (
@@ -58,6 +73,20 @@ export function ContactForm({
         Send an enquiry
       </p>
       <div className="hairline mb-4" />
+      {/* Honeypot: off-screen and skipped by keyboard and screen readers, so
+          only bots fill it in. */}
+      <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+        <label htmlFor={HONEYPOT_FIELD}>Website (leave this empty)</label>
+        <input
+          id={HONEYPOT_FIELD}
+          name={HONEYPOT_FIELD}
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          defaultValue=""
+        />
+      </div>
+      <input type="hidden" name={READY_FIELD} value={ready ? READY_VALUE : ''} readOnly />
       <div className="grid gap-4 sm:grid-cols-2">
         <Field
           label="Name"

@@ -10,6 +10,7 @@ import { enquirySchema, fieldErrors } from '@/lib/validation';
 import { ENQUIRY_TYPES } from '@/lib/constants';
 import { notifyNewEnquiry } from '@/lib/email';
 import { logActivity } from '@/lib/activity';
+import { checkSpam } from '@/lib/spam';
 
 export interface EnquiryFormState {
   status: 'idle' | 'success' | 'error';
@@ -22,6 +23,23 @@ export async function createEnquiryAction(
   _prev: EnquiryFormState,
   formData: FormData,
 ): Promise<EnquiryFormState> {
+  const verdict = checkSpam(formData);
+  if (verdict === 'honeypot') {
+    // Only a bot fills the hidden field. Pretend it worked so it moves on.
+    console.warn('[contact] enquiry dropped: honeypot filled');
+    return { status: 'success' };
+  }
+  if (verdict === 'not_ready') {
+    // Sent too fast, or without JavaScript. A real person can simply resend,
+    // so say so rather than dropping it silently.
+    console.warn('[contact] enquiry rejected: form not ready');
+    return {
+      status: 'error',
+      message:
+        'Sorry, we couldn’t send that just yet. Please wait a moment and try again, or email us directly.',
+    };
+  }
+
   const raw = {
     name: formData.get('name'),
     email: formData.get('email'),
