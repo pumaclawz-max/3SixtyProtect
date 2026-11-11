@@ -210,11 +210,6 @@ export function Header({ courseTypes = [] }: { courseTypes?: CourseTypeInfo[] })
         {/* Right */}
         <div className="flex items-center gap-2">
           <div className="hidden lg:block">
-            <Button href="/admin/login" size="sm">
-              Login
-            </Button>
-          </div>
-          <div className="hidden lg:block">
             <Button href="/book" size="sm">
               Book
             </Button>
@@ -387,9 +382,6 @@ export function Header({ courseTypes = [] }: { courseTypes?: CourseTypeInfo[] })
           <div className="flex shrink-0 flex-col gap-4 border-t border-ink-950 px-4 py-6">
             <Button href="/book" className="w-full">
               Book a Course
-            </Button>
-            <Button href="/admin/login" variant="outline" className="w-full">
-              Login
             </Button>
             <a
               href={SITE.phoneHref}
