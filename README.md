@@ -127,7 +127,8 @@ Key resolution lives in [`lib/supabase/config.ts`](lib/supabase/config.ts): the 
 
 ## ☁️ Deploying to Vercel
 
-Deployed on **Vercel**; every push to `main` auto-deploys.
+Deployed on **Vercel**. The live project is not yet connected to GitHub, so a push to `main`
+does not deploy on its own: see [HANDOVER.md](HANDOVER.md) for how production is deployed.
 
 1. Push the repo to GitHub.
 2. In Vercel: **Add New → Project** → import the repo. Next.js is auto-detected — accept the
